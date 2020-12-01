@@ -1,0 +1,15 @@
+[package]
+
+name = "rust-compare-diff-libs"
+version = "0.0.1"
+authors = ["Milan Hauth <milahu@gmail.com>"]
+
+
+
+[dependencies]
+
+ansi_term = "*"
+
+difference = "*" # abandoned, buggy
+dissimilar = "*" # large bundle size?
+diffs = "*" # low-level
