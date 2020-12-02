@@ -1,15 +1,10 @@
-[package]
+[workspace]
+members = [
+  "noop-str", "noop-string", # to compare size
+  "difference-lcs", # abandoned, buggy
+  "dissimilar-myers", # large binary size?
+  "diffs-myers", # low-level
+]
 
-name = "rust-compare-diff-libs"
-version = "0.0.1"
-authors = ["Milan Hauth <milahu@gmail.com>"]
-
-
-
-[dependencies]
-
-ansi_term = "*"
-
-difference = "*" # abandoned, buggy
-dissimilar = "*" # large bundle size?
-diffs = "*" # low-level
+# no artifacts (bins, libs) -> virtual manifest
+# -> specify dependencies in workspace members

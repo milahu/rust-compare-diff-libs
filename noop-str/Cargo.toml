@@ -1,0 +1,8 @@
+[package]
+name = "noop-str"
+version = "0.1.0"
+authors = ["Milan Hauth <milahu@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+ansi_term = "*"
