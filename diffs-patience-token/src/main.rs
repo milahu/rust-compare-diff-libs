@@ -4,49 +4,48 @@ use ansi_term::Colour;
 
 
 
-pub struct D <'a> {
-  a: &'a Vec<&'a str>,
-  b: &'a Vec<&'a str>
-}
+mod token_diff_handler { // avoid fn name collisions
 
-impl <'a> diffs::Diff for D <'a> {
+  use ansi_term::Colour;
 
-  type Error = ();
-
-  fn equal(&mut self, pos1: usize, _pos2: usize, len: usize) -> std::result::Result<(), ()> {
-    println!(
-      "  {}", &self.a[pos1..(pos1+len)].join(" ")
-    );
-    Ok(())
+  pub struct DiffHandler <'a> {
+    pub a: &'a Vec<&'a str>,
+    pub b: &'a Vec<&'a str>
   }
 
-  fn replace(&mut self, pos1: usize, len1: usize, pos2: usize, len2: usize) -> Result<(), ()> {
-    self.insert(pos1, pos2, len2).ok(); // .ok() = ignore errors
-    self.delete(pos1, len1, pos2).ok();
-    Ok(())
-  }
+  impl <'a> diffs::Diff for DiffHandler <'a> {
 
-  fn delete(&mut self, pos1: usize, len1: usize, _pos2: usize) -> std::result::Result<(), ()> {
-    println!("{}", Colour::Red.paint(format!(
-      "- {}", &self.a[pos1..(pos1+len1)].join(" ")
-    )));
-    Ok(())
-  }
+    type Error = ();
 
-  fn insert(&mut self, _pos1: usize, pos2: usize, len2: usize) -> std::result::Result<(), ()> {
-    println!("{}", Colour::Green.paint(format!(
-      "+ {}", &self.b[pos2..(pos2+len2)].join(" ")
-    )));
-    Ok(())
-  }
+    fn equal(&mut self, pos1: usize, _pos2: usize, len: usize) -> std::result::Result<(), ()> {
+      println!(
+        "  {}", &self.a[pos1..(pos1+len)].join(" ")
+      );
+      Ok(())
+    }
 
-  /*
-  fn finish(&mut self) -> std::result::Result<(), ()> {
-    println!("finish");
-    Ok(())
-  }
-  */
+    fn replace(&mut self, pos1: usize, len1: usize, pos2: usize, len2: usize) -> Result<(), ()> {
+      self.insert(pos1, pos2, len2).ok(); // .ok() = ignore errors
+      self.delete(pos1, len1, pos2).ok();
+      Ok(())
+    }
 
+    fn delete(&mut self, pos1: usize, len1: usize, _pos2: usize) -> std::result::Result<(), ()> {
+      println!("{}", Colour::Red.paint(format!(
+        "- {}", &self.a[pos1..(pos1+len1)].join(" ")
+      )));
+      Ok(())
+    }
+
+    fn insert(&mut self, _pos1: usize, pos2: usize, len2: usize) -> std::result::Result<(), ()> {
+      println!("{}", Colour::Green.paint(format!(
+        "+ {}", &self.b[pos2..(pos2+len2)].join(" ")
+      )));
+      Ok(())
+    }
+
+    //fn finish(&mut self) -> std::result::Result<(), ()> {}
+  }
 }
 
 
@@ -60,9 +59,9 @@ pub fn print_diff_diffs_patience_token(a_str: &str, b_str: &str) {
 
   //println!("a.len() = {}", a.len()); println!("b.len() = {}", b.len());
 
-  let mut diff = diffs::Replace::new( D{ a: &a, b: &b } );
+  let mut diff = diffs::Replace::new( token_diff_handler::DiffHandler{ a: &a, b: &b } );
 
-  diffs::patience::diff(&mut diff, &a, 0, a.len()-1, &b, 0, b.len()-1).unwrap();
+  diffs::patience::diff(&mut diff, &a, 0, a.len(), &b, 0, b.len()).unwrap();
 
 }
 
