@@ -57,7 +57,7 @@ impl <'a> diffs::Diff for D <'a> {
 
 
 
-pub fn print_diff_diffs_myers(a_str: &str, b_str: &str) {
+pub fn print_diff_diffs_myers_byte(a_str: &str, b_str: &str) {
 
   //let a: &[usize] = &[0, 1, 2, 3, 4];
   //let b: &[usize] = &[0, 1, 2, 9, 4];
@@ -97,6 +97,6 @@ fn main() {
     Colour::Red.paint("--- actual"),
   );
 
-  print_diff_diffs_myers(S1, S2);
+  print_diff_diffs_myers_byte(S1, S2);
 
 }

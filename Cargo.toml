@@ -3,7 +3,8 @@ members = [
   "noop-str", "noop-string", # to compare size
   "difference-lcs", # abandoned, buggy
   "dissimilar-myers", # large binary size?
-  "diffs-myers", # low-level
+  "diffs-myers-byte", # low-level, compare bytes
+  "diffs-myers-token", # compare token-vectors
 ]
 
 # no artifacts (bins, libs) -> virtual manifest
