@@ -2,18 +2,21 @@
 
 comparison of diff algorithms in rust
 
-* Longest Common Subsequence (LCS) algorithm
 * Myers diff algorithm
+   * can produce 'slider errors' = wrong grouping of lines / code blocks
+* Patience diff algorithm
+   * implemented in `diffs` library, see [diffs-patience-token/](diffs-patience-token/)
+   * (much) slower than myers algorithm
+   * can fix 'slider errors' = wrong grouping of lines / code blocks
+* Longest Common Subsequence (LCS) algorithm
+   * TODO better name? strictly speaking, all diff algos are LCS algos
+   * sometimes fails to find the longest common sequence, see [difference-lcs/](difference-lcs/)
 
 ### todo
 
 * read input from files, like the [diffr](https://crates.io/crates/diffr) tool
    * add more tests to compare algos, like [diff-slider-tools/corpus](https://github.com/mhagger/diff-slider-tools)
 * compare lines / tokens / bytes
-* Patience diff algorithm
-   * implemented in `diffs` library
-   * much slower than myers algorithm
-   * can fix 'slider errors' = wrong grouping of lines / code blocks
 * Histogram diff algorithm
    * can be faster than myers algorithm
    * does not work on all inputs (limited number of different tokens?)
@@ -39,9 +42,10 @@ total   extra  file
 
 293024      0  target/release/noop-str
 293024      0  target/release/noop-string
-309408  16384  target/release/diffs-myers-byte
+305312  12288  target/release/diffs-myers-byte
 309408  16384  target/release/diffs-myers-token
 313504  20480  target/release/difference-lcs
+333984  40960  target/release/diffs-patience-token
 333984  40960  target/release/dissimilar-myers
 ```
 
