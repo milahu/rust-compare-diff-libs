@@ -1,8 +1,3 @@
-// TODO
-// https://nest.pijul.com/pijul/pijul/discussions/153
-// based on pijul/diff/diff.rs
-// based on diffs-0.4.0/src/test.rs
-
 use ansi_term::Colour;
 
 
@@ -85,7 +80,7 @@ static S2: &'static str =
 
 fn main() {
 
-  println!("\ndiffs - myers diff algorithm - compare tokens");
+  println!("\ndiffs - myers diff algorithm - compare tokens\n");
 
   // diff header
   println!("{}\n{}",

@@ -1,8 +1,3 @@
-// TODO
-// https://nest.pijul.com/pijul/pijul/discussions/153
-// based on pijul/diff/diff.rs
-// based on diffs-0.4.0/src/test.rs
-
 use ansi_term::Colour;
 
 
@@ -16,42 +11,39 @@ impl <'a> diffs::Diff for D <'a> {
 
   type Error = ();
 
-  fn equal(&mut self, pos1: usize, pos2: usize, len: usize) -> std::result::Result<(), ()> {
-    println!("  equal   {:3?} {:3?} {:3?} {:3?}", pos1, pos2, len, &self.a[pos1..(pos1+len)]);
+  fn equal(&mut self, pos1: usize, _pos2: usize, len: usize) -> std::result::Result<(), ()> {
+    println!(
+      "  {}", &self.a[pos1..(pos1+len)]
+    );
     Ok(())
   }
 
   fn replace(&mut self, pos1: usize, len1: usize, pos2: usize, len2: usize) -> Result<(), ()> {
-    // yellow: assert black background / dark mode
-    // white background -> blue is better
-    println!("{}", Colour::Yellow.paint(format!(
-      "  replace {:3?} {:3?} {:3?} {:3?} {:3?} -> {:3?}",
-      pos1, len1, pos2, len2,
-      &self.a[pos1..(pos1+len1)], &self.b[pos2..(pos2+len2)]
-    )));
+    self.insert(pos1, pos2, len2).ok(); // .ok() = ignore errors
+    self.delete(pos1, len1, pos2).ok();
     Ok(())
   }
 
-  fn delete(&mut self, pos1: usize, len1: usize, pos2: usize) -> std::result::Result<(), ()> {
+  fn delete(&mut self, pos1: usize, len1: usize, _pos2: usize) -> std::result::Result<(), ()> {
     println!("{}", Colour::Red.paint(format!(
-      "- delete  {:3?} {:3?} {:3?} {:3?}",
-      pos1, len1, pos2, &self.a[pos1..(pos1+len1)]
+      "- {}", &self.a[pos1..(pos1+len1)]
     )));
     Ok(())
   }
 
-  fn insert(&mut self, pos1: usize, pos2: usize, len2: usize) -> std::result::Result<(), ()> {
+  fn insert(&mut self, _pos1: usize, pos2: usize, len2: usize) -> std::result::Result<(), ()> {
     println!("{}", Colour::Green.paint(format!(
-      "+ insert  {:3?} {:3?} {:3?} {:3?}",
-      pos1, pos2, len2, &self.b[pos2..(pos2+len2)]
+      "+ {}", &self.b[pos2..(pos2+len2)]
     )));
     Ok(())
   }
 
+  /*
   fn finish(&mut self) -> std::result::Result<(), ()> {
-    println!("  finish");
+    println!("finish");
     Ok(())
   }
+  */
 
 }
 
@@ -59,15 +51,12 @@ impl <'a> diffs::Diff for D <'a> {
 
 pub fn print_diff_diffs_myers_byte(a_str: &str, b_str: &str) {
 
-  //let a: &[usize] = &[0, 1, 2, 3, 4];
-  //let b: &[usize] = &[0, 1, 2, 9, 4];
-
   // compare bytes
   // convert str to slice: s -> s.as_bytes()
   let a = a_str.as_bytes();
   let b = b_str.as_bytes();
 
-  println!("a.len() = {}", a.len()); println!("b.len() = {}", b.len());
+  //println!("a.len() = {}", a.len()); println!("b.len() = {}", b.len());
 
   let mut diff = diffs::Replace::new( D{ a: a_str, b: b_str } );
 
@@ -89,7 +78,7 @@ static S2: &'static str = "\
 
 fn main() {
 
-  println!("\ndiffs - myers diff algorithm");
+  println!("\ndiffs - myers diff algorithm - compare bytes\n");
 
   // diff header
   println!("{}\n{}",

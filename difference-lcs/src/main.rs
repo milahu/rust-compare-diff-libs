@@ -1,7 +1,3 @@
-// TODO read input from files
-// TODO split by line / whitespace / character
-
-
 use ansi_term::Colour;
 
 use difference::{Changeset, Difference};
@@ -23,14 +19,6 @@ pub fn print_diff_difference(actual: &String, expected: &String) {
 
 // diff: (ERROR (tag_name)) (text)
 
-/*
-static S1: &'static str = "\
-(fragment (ERROR (tag_name)) (text) (script_element (start_tag (tag_name)) (end_tag)))";
-
-static S2: &'static str = "\
-(fragment (script_element (start_tag (tag_name)) (end_tag)))";
-*/
-
 const S1: &str =
 "(fragment (ERROR (tag_name)) (text) (script_element (start_tag (tag_name)) (end_tag)))"
 ;
@@ -43,8 +31,14 @@ const S2: &str =
 
 fn main() {
 
-  println!("\ndifference - Longest Common Subsequence (LCS) algorithm");
+  println!("\ndifference - Longest Common Subsequence (LCS) algorithm\n");
+
+  // diff header
+  println!("{}\n{}",
+    Colour::Green.paint("+++ expected"),
+    Colour::Red.paint("--- actual"),
+  );
+
   print_diff_difference(&String::from(S1), &String::from(S2));
-  //print_diff_difference(&S1, &S2);
 
 }

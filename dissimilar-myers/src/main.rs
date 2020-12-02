@@ -29,7 +29,14 @@ static S2: &'static str = "\
 
 fn main() {
 
-  println!("\ndissimilar - myers diff algorithm");
+  println!("\ndissimilar - myers diff algorithm\n");
+
+  // diff header
+  println!("{}\n{}",
+    Colour::Green.paint("+++ expected"),
+    Colour::Red.paint("--- actual"),
+  );
+
   print_diff_dissimilar(S1, S2);
 
 }
